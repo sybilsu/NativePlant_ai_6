@@ -90,7 +90,7 @@ export function renderSeasonalTimeline(plants) {
       structMonths.forEach(m => {
         const mIdx = ((m - 1) % 12);
         const bx = leftW + mIdx * colW + 2;
-        svgContent += `<rect x="${bx}" y="${y + rowH * 0.55}" width="${colW - 4}" height="${rowH * 0.25}" rx="2" fill="${plant.season_colors?.winter || '#b5926e'}" opacity="0.7" />`;
+        svgContent += `<rect x="${bx}" y="${y + rowH * 0.55}" width="${colW - 4}" height="${rowH * 0.25}" rx="2" fill="#9a9a92" opacity="0.6" />`;
       });
     }
 
@@ -107,9 +107,9 @@ export function renderSeasonalTimeline(plants) {
   const legendY = totalH - 16;
   svgContent += `<rect x="${leftW}" y="${legendY - 8}" width="14" height="8" rx="2" fill="#e8c820" fill-opacity="0.55" stroke="#555" stroke-width="1.2" stroke-dasharray="4,2.5"/>`;
   svgContent += `<text x="${leftW + 18}" y="${legendY}" font-size="10" fill="#7a7a70">花期（實際花色）</text>`;
-  svgContent += `<rect x="${leftW + 120}" y="${legendY - 8}" width="14" height="8" rx="2" fill="#b5926e" opacity="0.7"/>`;
+  svgContent += `<rect x="${leftW + 120}" y="${legendY - 8}" width="14" height="8" rx="2" fill="#9a9a92" opacity="0.6"/>`;
   svgContent += `<text x="${leftW + 138}" y="${legendY}" font-size="10" fill="#7a7a70">結構期</text>`;
-  svgContent += `<circle cx="${leftW + 200}" cy="${legendY - 3}" r="5" fill="#b5926e" opacity="0.8"/>`;
+  svgContent += `<circle cx="${leftW + 200}" cy="${legendY - 3}" r="5" fill="#9a9a92" opacity="0.8"/>`;
   svgContent += `<text x="${leftW + 210}" y="${legendY}" font-size="10" fill="#7a7a70">冬季骨幹</text>`;
 
   svgContent += '</svg>';
