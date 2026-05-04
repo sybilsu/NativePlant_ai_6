@@ -1,8 +1,10 @@
-const OpenAI = require('openai');
-const dotenv = require('dotenv');
-dotenv.config({ path: require('path').join(__dirname, '../../.env'), override: true });
 const fs = require('fs');
 const path = require('path');
+const OpenAI = require('openai');
+function readEnv() {
+  try { return Object.fromEntries(fs.readFileSync(path.join(__dirname,'../../.env'),'utf8').split('\n').filter(l=>l.includes('=')).map(l=>{const i=l.indexOf('=');return[l.slice(0,i).trim(),l.slice(i+1).trim()];})); } catch(e){return process.env;}
+}
+const ENV = readEnv();
 
 const MATCHING_SYSTEM_PROMPT = `你是台灣中部原生植物景觀設計專家，同時精通 Piet Oudolf 矩陣種植原則（《Planting: A New Perspective》）。
 
@@ -68,8 +70,8 @@ ${JSON.stringify(designDNA, null, 2)}
 - 海拔：${siteConditions?.altitude || 200}m
 - 面積：${siteConditions?.area || 100}㎡
 
-Piet 設計原則（RAG 檢索）：
-${(ragChunks || []).map(c => `- ${c.principle}: ${c.text_zh}`).join('\n')}
+Piet 設計原則與知識庫（RAG 語意檢索，共 ${(ragChunks || []).length} 筆）：
+${(ragChunks || []).map(c => `- [${c.source_file || c.source_type || 'RAG'}] ${c.content}`).join('\n')}
 
 台灣中部原生植物候選池（${candidatePlants.length}種）：
 ${JSON.stringify(candidatePlants.map(p => ({
@@ -81,7 +83,7 @@ ${JSON.stringify(candidatePlants.map(p => ({
 
 請生成 2-3 組台灣原生植物替代方案，輸出純 JSON 陣列。`;
 
-    const apiKey = process.env.OPENAI_API_KEY;
+    const apiKey = ENV.OPENAI_API_KEY;
     console.log('[match-plants] key prefix:', apiKey ? apiKey.slice(0, 10) : 'MISSING');
     const client = new OpenAI({ apiKey, baseURL: 'https://api.openai.com/v1' });
 

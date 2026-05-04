@@ -5,6 +5,12 @@
 [build.environment]
   NODE_VERSION = "20"
 
+[dev]
+  autoLaunch = false
+
+[functions."ingest-pdf"]
+  timeout = 900
+
 [[redirects]]
   from = "/api/*"
   to = "/.netlify/functions/:splat"

@@ -1,19 +1,27 @@
 export async function fetchPlantPalettes(designDNA, siteConditions) {
-  // First fetch RAG chunks
-  const ragRes = await fetch('/api/generate-rag', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      query_tags: [
-        ...(designDNA.piet_aesthetic_tags || []),
-        ...(designDNA.texture_tags || []),
-        designDNA.season_estimate === '冬季' ? 'winter' : '',
-        'matrix'
-      ].filter(Boolean),
-      top_k: 4
-    })
-  });
-  const { chunks } = await ragRes.json();
+  // Build semantic query from designDNA for vector search
+  const queryParts = [
+    designDNA.design_dna_summary || '',
+    ...(designDNA.piet_aesthetic_tags || []),
+    ...(designDNA.texture_tags || []),
+    designDNA.season_estimate ? `${designDNA.season_estimate}季節特徵` : '',
+    'Piet Oudolf 矩陣種植 台灣原生植物景觀設計'
+  ].filter(Boolean);
+  const semanticQuery = queryParts.join('，');
+
+  // Query Supabase RAG vector search
+  let chunks = [];
+  try {
+    const ragRes = await fetch('/api/query-rag', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ query: semanticQuery, top_k: 5 })
+    });
+    const ragData = await ragRes.json();
+    chunks = ragData.chunks || [];
+  } catch (e) {
+    console.warn('[RAG] query-rag failed, proceeding without RAG context:', e.message);
+  }
 
   // Then fetch plant matching
   const matchRes = await fetch('/api/match-plants', {

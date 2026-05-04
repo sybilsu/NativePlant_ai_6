@@ -1,6 +1,12 @@
-const OpenAI = require('openai');
+const fs = require('fs');
 const path = require('path');
-require('dotenv').config({ path: path.join(__dirname, '../../.env'), override: true });
+const OpenAI = require('openai');
+function readEnv() {
+  try {
+    return Object.fromEntries(fs.readFileSync(path.join(__dirname,'../../.env'),'utf8').split('\n').filter(l=>l.includes('=')).map(l=>{const i=l.indexOf('=');return[l.slice(0,i).trim(),l.slice(i+1).trim()];}));
+  } catch(e){return process.env;}
+}
+const ENV = readEnv();
 
 const STYLE_EXTRACTION_PROMPT = `你是一位具備深度景觀設計與生態學知識的視覺分析師，專精於 Piet Oudolf 自然主義種植美學（Matrix Planting）。
 
@@ -46,9 +52,7 @@ exports.handler = async (event) => {
       return { statusCode: 400, body: JSON.stringify({ error: '缺少圖片資料' }) };
     }
 
-    const apiKey = process.env.OPENAI_API_KEY;
-    console.log('[analyze-image] key prefix:', apiKey ? apiKey.slice(0, 10) : 'MISSING');
-    const client = new OpenAI({ apiKey, baseURL: 'https://api.openai.com/v1' });
+    const client = new OpenAI({ apiKey: ENV.OPENAI_API_KEY, baseURL: 'https://api.openai.com/v1' });
 
     const userText = siteConditions
       ? `基地條件：日照=${siteConditions.light}，水分=${siteConditions.moisture}，海拔=${siteConditions.altitude}m，面積=${siteConditions.area}㎡\n\n請分析這張景觀參考圖的設計DNA，輸出純 JSON。`
