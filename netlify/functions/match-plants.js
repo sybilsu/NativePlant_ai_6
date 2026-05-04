@@ -89,7 +89,7 @@ ${JSON.stringify(candidatePlants.map(p => ({
 
     const response = await client.chat.completions.create({
       model: 'gpt-4o',
-      max_tokens: 3000,
+      max_tokens: 2000,
       messages: [
         { role: 'system', content: MATCHING_SYSTEM_PROMPT },
         { role: 'user', content: contextStr }
