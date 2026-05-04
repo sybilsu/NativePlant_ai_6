@@ -30,12 +30,14 @@ export async function fetchPlantPalettes(designDNA, siteConditions) {
     body: JSON.stringify({ designDNA, siteConditions, ragChunks: chunks })
   });
 
-  if (!matchRes.ok) {
-    const err = await matchRes.json();
-    throw new Error(err.error || '植物匹配失敗');
+  const matchText = await matchRes.text();
+  if (!matchRes.ok || matchText.trimStart().startsWith('<')) {
+    let detail = `HTTP ${matchRes.status}`;
+    try { detail = JSON.parse(matchText).error || detail; } catch (_) {}
+    throw new Error(`植物匹配失敗：${detail}`);
   }
 
-  const { palettes } = await matchRes.json();
+  const { palettes } = JSON.parse(matchText);
   return palettes;
 }
 
