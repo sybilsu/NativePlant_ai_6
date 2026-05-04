@@ -8,6 +8,9 @@
 [dev]
   autoLaunch = false
 
+[functions]
+  included_files = ["data/**"]
+
 [functions."ingest-pdf"]
   timeout = 900
 
