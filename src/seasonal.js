@@ -96,7 +96,7 @@ export function renderSeasonalTimeline(plants) {
 
     // Winter structure indicator
     if (plant.winter_structure) {
-      svgContent += `<circle cx="${totalW - 22}" cy="${midY}" r="5" fill="#b5926e" opacity="0.8" />`;
+      svgContent += `<circle cx="${totalW - 22}" cy="${midY}" r="5" fill="#9a9a92" opacity="0.8" />`;
     }
 
     // Divider
