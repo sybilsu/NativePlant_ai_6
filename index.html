@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NativePlant AI — 台灣原生植物景觀設計助手</title>
+  <meta name="description" content="AI 輔助自然主義種植設計工具，以 Piet Oudolf 原則為框架，為台灣中部原生植物生成景觀設計方案">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Noto+Serif+TC:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Background -->
+  <div class="bg-layer"></div>
+
+  <!-- Navigation -->
+  <nav class="nav glass-card">
+    <div class="nav-brand">
+      <div class="brand-dot"></div>
+      NativePlant AI
+    </div>
+    <div class="nav-links">
+      <a class="nav-link active" data-section="hero" href="#">首頁</a>
+      <a class="nav-link" data-section="upload-section" href="#">上傳分析</a>
+      <a class="nav-link" data-section="palette-section" href="#">植栽提案</a>
+      <a class="nav-link" data-section="matrix-section" href="#">矩陣計算</a>
+      <a class="nav-link" data-section="seasonal-section" href="#">季相預覽</a>
+      <a class="nav-link" data-section="export-section" href="#">匯出</a>
+    </div>
+  </nav>
+
+  <!-- ═══════════════════════════════════════
+       SECTION 1 — HERO
+  ═══════════════════════════════════════ -->
+  <section id="hero" class="section active">
+    <div class="container" style="display:flex;align-items:center;justify-content:center;min-height:80vh">
+      <div class="hero-panel glass-card">
+        <p class="hero-eyebrow">Piet Oudolf × 台灣中部原生植物</p>
+        <h1 class="hero-title">
+          上傳參考圖<br>提取<strong>設計 DNA</strong>
+        </h1>
+        <p class="hero-subtitle">
+          AI 解析自然主義種植的視覺語彙，從台灣中部 1000 種原生植物庫中<br>
+          生成符合在地氣候的完整植栽提案
+        </p>
+
+        <div class="hero-steps">
+          <div class="hero-step">
+            <div class="step-num">①</div>
+            <div class="step-label">上傳 Piet Oudolf 風格參考圖，輸入基地環境條件</div>
+          </div>
+          <div class="hero-step">
+            <div class="step-num">②</div>
+            <div class="step-label">GPT-4o 萃取設計 DNA，Qwen 生成台灣原生替代清單</div>
+          </div>
+          <div class="hero-step">
+            <div class="step-num">③</div>
+            <div class="step-label">動態矩陣計算 BOQ，四季時間軸預覽，匯出 Excel</div>
+          </div>
+        </div>
+
+        <button id="hero-cta" class="btn btn-primary btn-large">
+          開始設計
+          <span>→</span>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════
+       SECTION 2 — UPLOAD
+  ═══════════════════════════════════════ -->
+  <section id="upload-section" class="section">
+    <div class="container">
+      <div class="section-header">
+        <p class="section-eyebrow">Step 01</p>
+        <h2 class="section-title">上傳參考圖<strong>提取設計 DNA</strong></h2>
+      </div>
+
+      <div class="upload-grid">
+        <!-- Drop Zone -->
+        <div id="drop-zone" class="drop-zone">
+          <div id="upload-placeholder" class="upload-placeholder">
+            <div class="upload-icon">🌿</div>
+            <div class="upload-hint">
+              <strong>點擊或拖曳上傳</strong><br>
+              Piet Oudolf 風格景觀參考圖<br>
+              <span style="font-size:0.78rem;color:var(--ink-4)">JPG / PNG，最大 10MB</span>
+            </div>
+          </div>
+          <div id="upload-preview" class="upload-preview">
+            <img id="preview-img" src="" alt="參考圖預覽">
+          </div>
+          <input id="file-input" type="file" accept="image/jpeg,image/png,image/webp" style="display:none">
+        </div>
+
+        <!-- Site Conditions -->
+        <div class="site-panel glass-card">
+          <h3>基地環境條件</h3>
+
+          <div class="form-group">
+            <label class="form-label" for="site-light">日照條件</label>
+            <select id="site-light" class="form-control">
+              <option value="全日照">全日照（每日 6h+）</option>
+              <option value="半日照" selected>半日照（每日 3-6h）</option>
+              <option value="半遮蔭">半遮蔭（每日 1-3h）</option>
+              <option value="全遮蔭">全遮蔭</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="site-moisture">水分條件</label>
+            <select id="site-moisture" class="form-control">
+              <option value="乾燥">乾燥（旱地、排水良好）</option>
+              <option value="中等" selected>中等（適中濕潤）</option>
+              <option value="濕潤">濕潤（水邊、低窪）</option>
+            </select>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label" for="site-altitude">海拔（公尺）</label>
+              <input id="site-altitude" type="number" class="form-control" value="200" min="0" max="4000">
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="site-area">面積（㎡）</label>
+              <input id="site-area" type="number" class="form-control" value="100" min="1">
+            </div>
+          </div>
+
+          <button id="analyze-btn" class="btn btn-primary" style="width:100%;justify-content:center;margin-top:0.5rem" disabled>
+            開始分析
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════
+       SECTION 3 — EXTRACTION RESULT
+  ═══════════════════════════════════════ -->
+  <section id="extraction-section" class="section">
+    <div class="container">
+      <div class="section-header">
+        <p class="section-eyebrow">Step 02</p>
+        <h2 class="section-title">風格特徵萃取<strong>Style Extraction</strong></h2>
+      </div>
+
+      <div id="extraction-loading" class="loading-overlay glass-card" style="margin-bottom:1.5rem;border-radius:var(--radius-lg)">
+        <div class="loading-spinner"></div>
+        <p class="loading-text">GPT-4o 正在解析景觀設計 DNA…</p>
+      </div>
+
+      <div class="extraction-grid">
+        <!-- Image with overlay -->
+        <div class="extracted-image-wrap glass-card">
+          <img id="extracted-image" src="" alt="分析圖片" style="display:block">
+          <div id="color-palette" class="color-palette-strip"></div>
+        </div>
+
+        <!-- DNA Results -->
+        <div class="dna-panel glass-card">
+          <div id="dna-result">
+            <!-- Populated by matching.js renderExtractionResult() -->
+          </div>
+        </div>
+      </div>
+
+      <div class="section-actions">
+        <button id="match-plants-btn" class="btn btn-primary" disabled>
+          生成植栽提案 →
+        </button>
+        <button id="back-to-upload" class="btn btn-ghost">
+          ← 重新上傳
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════
+       SECTION 4 — PLANT PALETTE
+  ═══════════════════════════════════════ -->
+  <section id="palette-section" class="section">
+    <div class="container-wide">
+      <div class="section-header">
+        <p class="section-eyebrow">Step 03</p>
+        <h2 class="section-title">台灣原生植物<strong>替代方案</strong></h2>
+      </div>
+
+      <div id="palette-loading" class="loading-overlay glass-card" style="margin-bottom:1.5rem;border-radius:var(--radius-lg)">
+        <div class="loading-spinner"></div>
+        <p class="loading-text">Qwen2.5-VL 正在語義匹配台灣原生植物…</p>
+      </div>
+
+      <div id="palette-tabs" class="palette-tabs"></div>
+
+      <div id="palette-results" class="glass-card" style="padding:1.5rem">
+        <!-- Populated by matching.js renderPalettes() -->
+        <p style="color:var(--ink-4);text-align:center;padding:2rem">請先完成圖片分析並點擊「生成植栽提案」</p>
+      </div>
+
+      <div class="section-actions">
+        <button id="to-matrix-btn" class="btn btn-primary">矩陣計算 BOQ →</button>
+        <button class="btn btn-ghost" onclick="document.getElementById('back-to-upload').click()">← 重新分析</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════
+       SECTION 5 — MATRIX CALCULATOR
+  ═══════════════════════════════════════ -->
+  <section id="matrix-section" class="section">
+    <div class="container-wide">
+      <div class="section-header">
+        <p class="section-eyebrow">Step 04</p>
+        <h2 class="section-title">動態矩陣計算<strong>植栽 BOQ</strong></h2>
+      </div>
+
+      <div class="matrix-controls glass-card">
+        <div class="form-group">
+          <label class="form-label">基地面積（㎡）</label>
+          <input id="matrix-area" type="number" class="form-control" value="100" min="1">
+        </div>
+        <div class="form-group">
+          <label class="form-label">苗木盆型</label>
+          <select id="matrix-pot" class="form-control">
+            <option value="3吋">3 吋盆（低密度試種）</option>
+            <option value="4吋">4 吋盆</option>
+            <option value="5吋" selected>5 吋盆（標準施工）</option>
+          </select>
+        </div>
+        <div class="matrix-stats">
+          <div class="stat-item">
+            <span id="total-qty" class="stat-value">—</span>
+            <span class="stat-label">總株數</span>
+          </div>
+          <div class="stat-item">
+            <span id="total-area" class="stat-value">—</span>
+            <span class="stat-label">施工面積</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="glass-card" style="overflow:hidden">
+        <table class="boq-table">
+          <thead>
+            <tr>
+              <th>植物</th>
+              <th>角色</th>
+              <th>盆型</th>
+              <th>株距</th>
+              <th>區域面積</th>
+              <th>株數</th>
+              <th>對應Piet</th>
+            </tr>
+          </thead>
+          <tbody id="boq-tbody">
+            <tr><td colspan="7" class="empty-row">請先完成植栽提案分析</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="section-actions">
+        <button id="matrix-to-seasonal-btn" class="btn btn-primary">四季時間軸 →</button>
+        <button id="to-export-btn" class="btn btn-ghost">匯出 Excel</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════
+       SECTION 6 — SEASONAL TIMELINE
+  ═══════════════════════════════════════ -->
+  <section id="seasonal-section" class="section">
+    <div class="container-wide">
+      <div class="section-header">
+        <p class="section-eyebrow">Step 05</p>
+        <h2 class="section-title">四季時間軸<strong>季相演替預覽</strong></h2>
+      </div>
+
+      <div class="winter-score-bar glass-card">
+        <span class="winter-score-label">冬季視覺結構保留率（Piet 70/30 原則）</span>
+        <span id="winter-score" style="font-family:var(--font-en);font-size:1.5rem;font-weight:500">—</span>
+        <span style="font-size:0.78rem;color:var(--ink-3)">（建議 ≥ 30%）</span>
+      </div>
+
+      <div id="seasonal-svg-container" class="glass-card" style="padding:1.5rem">
+        <p style="color:var(--ink-4);text-align:center;padding:2rem">請先完成植栽提案分析</p>
+      </div>
+
+      <div class="section-actions">
+        <button id="view-seasonal-btn" class="btn btn-ghost" style="display:none">重新載入</button>
+        <button id="to-export-btn-2" class="btn btn-primary" onclick="document.getElementById('to-export-btn').click()">前往匯出 →</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════
+       SECTION 7 — EXPORT
+  ═══════════════════════════════════════ -->
+  <section id="export-section" class="section">
+    <div class="container">
+      <div class="section-header">
+        <p class="section-eyebrow">Step 06</p>
+        <h2 class="section-title">匯出<strong>設計文件</strong></h2>
+      </div>
+
+      <div class="export-cards">
+        <div class="export-card" id="export-excel-btn">
+          <div class="export-icon">📊</div>
+          <div class="export-label">Excel 植栽表</div>
+          <div class="export-desc">含 BOQ 數量表<br>植物屬性 × 基地條件</div>
+        </div>
+
+        <div class="export-card" id="save-project-btn">
+          <div class="export-icon">💾</div>
+          <div class="export-label">儲存專案</div>
+          <div class="export-desc">儲存至瀏覽器本地<br>下次開啟可繼續編輯</div>
+        </div>
+
+        <div class="export-card" onclick="window.print()">
+          <div class="export-icon">🖨</div>
+          <div class="export-label">列印頁面</div>
+          <div class="export-desc">直接列印目前畫面</div>
+        </div>
+      </div>
+
+      <div style="margin-top:2rem;padding:1.25rem;border-radius:var(--radius-md);background:rgba(138,158,130,0.08);border:1px solid rgba(138,158,130,0.2)">
+        <p style="font-size:0.8rem;color:var(--ink-3);line-height:1.6">
+          <strong style="color:var(--ink-2)">學術引用建議：</strong><br>
+          Oudolf, P. & Kingsbury, N. (2024). <em>Planting: A New Perspective</em>. Timber Press.<br>
+          AI 分析模型：OpenAI GPT-4o (Vision) + Qwen2.5-VL (Alibaba DashScope)
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- SheetJS for Excel export -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+
+  <!-- Main app module -->
+  <script type="module" src="src/app.js"></script>
+
+</body>
+</html>
