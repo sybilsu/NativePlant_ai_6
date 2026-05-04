@@ -88,7 +88,7 @@ ${JSON.stringify(candidatePlants.map(p => ({
     const client = new OpenAI({ apiKey, baseURL: 'https://api.openai.com/v1' });
 
     const response = await client.chat.completions.create({
-      model: 'gpt-4o',
+      model: 'gpt-4o-mini',
       max_tokens: 2000,
       messages: [
         { role: 'system', content: MATCHING_SYSTEM_PROMPT },

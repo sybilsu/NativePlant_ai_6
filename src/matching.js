@@ -15,7 +15,7 @@ export async function fetchPlantPalettes(designDNA, siteConditions) {
     const ragRes = await fetch('/api/query-rag', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ query: semanticQuery, top_k: 5 })
+      body: JSON.stringify({ query: semanticQuery, top_k: 3 })
     });
     const ragData = await ragRes.json();
     chunks = ragData.chunks || [];
