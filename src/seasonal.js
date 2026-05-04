@@ -68,17 +68,20 @@ export function renderSeasonalTimeline(plants) {
     svgContent += `<text x="10" y="${midY - 5}" font-size="12" fill="#2a2a24" dominant-baseline="middle">${plant.name_zh}</text>`;
     svgContent += `<text x="10" y="${midY + 10}" font-size="9" fill="#7a7a70" font-style="italic">${(plant.name_latin || '').substring(0, 22)}</text>`;
 
-    // Bloom bar
+    // Bloom bar — dashed border with real flower color
     const bloomMonths = plant.bloom_months || [];
     if (bloomMonths.length > 0) {
+      const flowerFill = plant.flower_color || '#e8c820';
       bloomMonths.forEach(m => {
         const mIdx = ((m - 1) % 12);
         const bx = leftW + mIdx * colW + 2;
-        svgContent += `<rect x="${bx}" y="${y + rowH * 0.2}" width="${colW - 4}" height="${rowH * 0.3}" rx="3" fill="${plant.season_colors?.summer || '#e8c820'}" opacity="0.85" />`;
+        const bh = rowH * 0.32;
+        const by = y + rowH * 0.18;
+        svgContent += `<rect x="${bx}" y="${by}" width="${colW - 4}" height="${bh}" rx="3" fill="${flowerFill}" fill-opacity="0.55" stroke="#555" stroke-width="1.2" stroke-dasharray="4,2.5" />`;
       });
-      // Bloom label
+      // Bloom label on first month
       const firstM = ((bloomMonths[0] - 1) % 12);
-      svgContent += `<text x="${leftW + firstM * colW + colW / 2}" y="${y + rowH * 0.55}" text-anchor="middle" font-size="8" fill="#666">花</text>`;
+      svgContent += `<text x="${leftW + firstM * colW + colW / 2}" y="${y + rowH * 0.58}" text-anchor="middle" font-size="8" fill="#444">花</text>`;
     }
 
     // Structure bar
@@ -102,8 +105,8 @@ export function renderSeasonalTimeline(plants) {
 
   // Legend
   const legendY = totalH - 16;
-  svgContent += `<rect x="${leftW}" y="${legendY - 8}" width="14" height="8" rx="2" fill="#e8c820" opacity="0.85"/>`;
-  svgContent += `<text x="${leftW + 18}" y="${legendY}" font-size="10" fill="#7a7a70">花期</text>`;
+  svgContent += `<rect x="${leftW}" y="${legendY - 8}" width="14" height="8" rx="2" fill="#e8c820" fill-opacity="0.55" stroke="#555" stroke-width="1.2" stroke-dasharray="4,2.5"/>`;
+  svgContent += `<text x="${leftW + 18}" y="${legendY}" font-size="10" fill="#7a7a70">花期（實際花色）</text>`;
   svgContent += `<rect x="${leftW + 60}" y="${legendY - 8}" width="14" height="8" rx="2" fill="#b5926e" opacity="0.7"/>`;
   svgContent += `<text x="${leftW + 78}" y="${legendY}" font-size="10" fill="#7a7a70">結構期</text>`;
   svgContent += `<circle cx="${leftW + 140}" cy="${legendY - 3}" r="5" fill="#b5926e" opacity="0.8"/>`;
