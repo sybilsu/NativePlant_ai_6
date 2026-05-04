@@ -107,10 +107,10 @@ export function renderSeasonalTimeline(plants) {
   const legendY = totalH - 16;
   svgContent += `<rect x="${leftW}" y="${legendY - 8}" width="14" height="8" rx="2" fill="#e8c820" fill-opacity="0.55" stroke="#555" stroke-width="1.2" stroke-dasharray="4,2.5"/>`;
   svgContent += `<text x="${leftW + 18}" y="${legendY}" font-size="10" fill="#7a7a70">花期（實際花色）</text>`;
-  svgContent += `<rect x="${leftW + 60}" y="${legendY - 8}" width="14" height="8" rx="2" fill="#b5926e" opacity="0.7"/>`;
-  svgContent += `<text x="${leftW + 78}" y="${legendY}" font-size="10" fill="#7a7a70">結構期</text>`;
-  svgContent += `<circle cx="${leftW + 140}" cy="${legendY - 3}" r="5" fill="#b5926e" opacity="0.8"/>`;
-  svgContent += `<text x="${leftW + 150}" y="${legendY}" font-size="10" fill="#7a7a70">冬季骨幹</text>`;
+  svgContent += `<rect x="${leftW + 120}" y="${legendY - 8}" width="14" height="8" rx="2" fill="#b5926e" opacity="0.7"/>`;
+  svgContent += `<text x="${leftW + 138}" y="${legendY}" font-size="10" fill="#7a7a70">結構期</text>`;
+  svgContent += `<circle cx="${leftW + 200}" cy="${legendY - 3}" r="5" fill="#b5926e" opacity="0.8"/>`;
+  svgContent += `<text x="${leftW + 210}" y="${legendY}" font-size="10" fill="#7a7a70">冬季骨幹</text>`;
 
   svgContent += '</svg>';
   container.innerHTML = svgContent;
