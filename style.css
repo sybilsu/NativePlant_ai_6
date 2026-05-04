@@ -194,7 +194,7 @@ body {
 @media (max-width: 720px) { .upload-grid { grid-template-columns: 1fr; } }
 
 .drop-zone {
-  min-height: 260px; border-radius: var(--radius-lg);
+  min-height: 260px; border-radius: var(--radius-lg); height: auto;
   border: 2px dashed rgba(0,0,0,0.15);
   background: rgba(255,255,255,0.45);
   backdrop-filter: var(--glass-blur);
@@ -208,8 +208,8 @@ body {
 .upload-icon { font-size: 2rem; margin-bottom: 0.75rem; opacity: 0.3; }
 .upload-hint { font-size: 0.85rem; color: var(--ink-3); line-height: 1.5; }
 .upload-hint strong { color: var(--ink); }
-.upload-preview { display: none; width: 100%; height: 100%; }
-.upload-preview img { width: 100%; height: 260px; object-fit: cover; border-radius: 0; }
+.upload-preview { display: none; width: 100%; }
+.upload-preview img { width: 100%; height: auto; max-height: 480px; object-fit: contain; border-radius: var(--radius-lg); display: block; }
 
 .site-panel { padding: 1.5rem; }
 .site-panel h3 {
